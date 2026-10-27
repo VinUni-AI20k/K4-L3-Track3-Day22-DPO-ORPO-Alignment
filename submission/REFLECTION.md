@@ -129,6 +129,9 @@ _Trả lời ở đây._
 
 _Biến thể nào thay đổi độ dài nhiều nhất, và vì sao (dựa vào công thức loss)?_
 
+_Chênh lệch độ chính xác giữa biến thể tốt nhất và DPO có vượt sai số chuẩn √(p(1−p)/n) không? Với 1 seed
+và n cặp held-out, bạn có đủ bằng chứng để nói biến thể đó tốt hơn DPO không?_
+
 ---
 
 ## 9. GRPO (bonus NB7)
@@ -139,6 +142,9 @@ _Biến thể nào thay đổi độ dài nhiều nhất, và vì sao (dựa và
 | Sai số chuẩn ≈ √(p(1−p)/n) | _<...>_ |
 
 _Thành phần reward nào tăng trước (đúng định dạng hay đúng đáp án)? Chênh lệch có vượt nhiễu không?_
+
+_Nếu bạn chạy thêm `loss_type="grpo"` hoặc `"dr_grpo"` (câu hỏi 4 của NB7): độ dài câu trả lời thay đổi thế nào
+so với mặc định `"dapo"`, và vì sao?_
 
 ---
 

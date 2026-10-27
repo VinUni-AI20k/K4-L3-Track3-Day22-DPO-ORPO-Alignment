@@ -27,6 +27,14 @@
 # | Sinh trong lúc huấn luyện | không | có (tự sinh, on-policy) |
 # | Reference / KL | bắt buộc (β) | tuỳ chọn; TRL mặc định `beta=0.0` |
 # | Chi phí | 2 forward / cặp | G lần sinh / câu hỏi |
+#
+# **Tên là GRPO, nhưng loss mặc định là của DAPO.** `GRPOConfig` không đặt `loss_type` thì TRL dùng
+# `"dapo"`: loss của từng token được chia cho tổng số token trong cả batch tích luỹ. Cách `"grpo"`
+# của bài DeepSeekMath chia theo độ dài *từng* câu, và TRL ghi rõ là không khuyến nghị vì thiên vị độ
+# dài: câu ngắn có advantage dương được đẩy mạnh hơn trên mỗi token, câu dài có advantage âm bị phạt
+# nhẹ hơn. `"dr_grpo"` (Dr. GRPO) chia cho một hằng số (`max_completion_length`). Notebook chỉ dùng
+# cách chuẩn hoá của DAPO; các kỹ thuật khác trong bài DAPO như clip-higher (`epsilon_high`) hay bỏ
+# câu bị cắt cụt (`mask_truncated_completions`) đều **không** bật.
 
 # %%
 import sys
@@ -180,3 +188,6 @@ print(result)
 # 2. Với N_TEST=100, chênh lệch độ chính xác bao nhiêu mới vượt nhiễu? (sai số chuẩn ≈ √(p(1−p)/n)).
 # 3. So `acc_before` với GSM8K (tiếng Anh) của SFT ở NB6: ngôn ngữ, độ khó, câu hỏi và cách chấm
 #    đều khác, nên con số nào đáng tin hơn cho câu hỏi "GRPO có giúp toán không"?
+# 4. Thêm `loss_type="grpo"` vào `GRPOConfig` rồi chạy lại (giữ nguyên seed và số bước), sau đó thử
+#    `"dr_grpo"`. Độ dài câu trả lời (`completions/mean_length` trong `trainer.state.log_history`) và
+#    độ chính xác thay đổi thế nào so với mặc định `"dapo"`? Liên hệ với thiên vị độ dài của DPO ở NB0.
