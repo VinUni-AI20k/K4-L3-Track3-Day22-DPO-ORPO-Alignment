@@ -22,6 +22,13 @@
 #
 # **Đọc kết quả:** độ chính xác reward trên held-out và độ dài đầu ra trung bình. Các
 # biến thể có thang reward khác nhau, nên **không so trực tiếp giá trị margin** giữa các dòng.
+#
+# **Đừng kỳ vọng chênh lệch lớn.** Một nghiên cứu có đối chứng năm 2026 (arXiv 2603.19335) chạy 20
+# biến thể DPO ở cỡ 1.5B, mỗi biến thể 5 seed: sau hiệu chỉnh so sánh bội, không biến thể nào tốt hơn
+# DPO gốc có ý nghĩa thống kê, còn SimPO kém hơn rõ. Thứ hạng còn có thể đảo khi đổi cỡ mô hình. Ở đây
+# mỗi biến thể chỉ chạy 1 seed và chấm trên 100 cặp held-out (tier T4), nên khoảng tin cậy 95% của độ
+# chính xác reward rộng khoảng ±10 điểm. ORPO (và CPO/SimPO) vẫn nằm trong `trl.experimental`: TRL còn
+# bảo trì nhưng không xếp vào nhóm trainer ổn định.
 
 # %%
 import os
@@ -167,3 +174,5 @@ plt.show()
 # 2. RPO có giữ `rewards/chosen` dương trong khi DPO thì không? (so với chẩn đoán NB3)
 # 3. Độ chính xác reward cao hơn có nghĩa là mô hình tốt hơn không? Chạy giám khảo ở NB4 trên
 #    adapter `adapters/variants/<name>` (đặt `DPO_ADAPTER_OVERRIDE`) để kiểm tra.
+# 4. Chênh lệch độ chính xác giữa biến thể tốt nhất và DPO có lớn hơn khoảng tin cậy không?
+#    (sai số chuẩn ≈ √(p(1−p)/n) với n là số cặp held-out). Nếu không, bạn kết luận được gì?

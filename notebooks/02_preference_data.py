@@ -11,6 +11,13 @@
 # (khoảng 4.1k cặp). Lab cũ huấn luyện DPO trên UltraFeedback tiếng Anh trong khi SFT và
 # đánh giá đều bằng tiếng Việt, nên khó đọc hiệu ứng của DPO.
 #
+# **"onpolicy" ở đây là so với Sailor2, không phải với mô hình của bạn.** Câu trả lời trong bộ này
+# do Sailor2 sinh ra rồi được chấm (xem NB4 §3), nên với Qwen3-4B của lab đây là dữ liệu
+# **off-policy**: mô hình học từ câu trả lời của một mô hình khác. Khác với NB7, nơi mô hình tự sinh
+# câu trả lời trong lúc huấn luyện. Muốn có cặp on-policy thật cho DPO thì cho chính mô hình SFT sinh
+# vài câu trả lời mỗi câu hỏi, chấm bằng mô hình reward, lấy câu cao nhất làm `chosen` và thấp nhất
+# làm `rejected`; lặp lại vòng này sau mỗi lần huấn luyện gọi là *iterative DPO*.
+#
 # > **Mục tiêu:** đưa dữ liệu về dạng hội thoại của TRL
 # > (`prompt`/`chosen`/`rejected` là list message), lọc cặp vượt `MAX_LEN`,
 # > chia **tập huấn luyện/eval không trùng câu hỏi**, đo thiên vị độ dài, lưu Parquet.
